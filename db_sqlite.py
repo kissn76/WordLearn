@@ -21,8 +21,6 @@ class Database():
 
 
     def create_table(self, create_table_sql:str):
-        ret = None
-
         if not bool(self.conn):
             self.create_connection()
 
@@ -30,15 +28,12 @@ class Database():
             try:
                 cur = self.conn.cursor()
                 cur.execute(create_table_sql)
-                ret = cur.rowcount
             except Error as e:
                 print(e)
 
             self.connection_close()
         else:
             print("Error! Cannot create the database connection.")
-
-        return ret
 
 
     def create_tables(self):
@@ -47,13 +42,11 @@ class Database():
                         type text NOT NULL UNIQUE
                     );"""
 
-        ret = self.create_table(sql_types)
-        print(ret)
-        if bool(ret):
-            types = ("vorb_1", "vorb_2", "vorb_3", "noun_singular", "noun_plural", "adverb", "adjective")
-            for word in types:
-                print(word)
-                self.data_insert("types", type=word)
+        self.create_table(sql_types)
+        types = ("vorb_1", "vorb_2", "vorb_3", "noun_singular", "noun_plural", "adjective_positive", "adjective_comparative", "adjective_superlative", "adverb")
+        for word in types:
+            print(word)
+            self.data_insert("types", type=word)
 
 
     def data_insert(self, table:str, **values) -> int:
@@ -105,4 +98,10 @@ class Database():
         else:
             print("Error! Cannot create the database connection.")
 
+        return ret
+
+
+    def types_get(self):
+        ret = self.data_select("types")
+        print(ret)
         return ret
