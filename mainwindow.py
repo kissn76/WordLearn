@@ -1,41 +1,34 @@
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.button import Button
+from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.clock import Clock
 import db_sqlite as db
-
-
-class MainMenu(BoxLayout):
-    def select(self, button):
-        print(button)
 
 
 class TypelistWindow(BoxLayout):
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(TypelistWindow, self).__init__(**kwargs)
         self.orientation = "vertical"
+        Clock.schedule_once(self.on_start, 0)
 
 
-    def type_set(self, instance, value):
-        print(instance, value)
-
-
-    def load(self):
+    def on_start(self, *args):
         database = db.Database()
         types = database.types_get()
 
         for type_t in types:
             self.ids.item_list.add_widget(Label(text=str(type_t[0])))
-            b = Label(text=f"[ref={type_t[0]}/{type_t[1]}][color=0000ff]{type_t[1]}[/color][/ref]", markup=True)
-            b.bind(on_ref_press=self.type_set)
-            self.ids.item_list.add_widget(b)
+            self.ids.item_list.add_widget(Label(text=type_t[1]))
+
+
+class MainPanel(BoxLayout):
+    pass
 
 
 class MainWindow(App):
     def build(self):
-        tlw = TypelistWindow()
-        tlw.load()
-        return tlw
+        return MainPanel()
 
 
 if __name__ == '__main__':
