@@ -45,7 +45,6 @@ class Database():
         self.create_table(sql_types)
         types = ("vorb_1", "vorb_2", "vorb_3", "noun_singular", "noun_plural", "adjective_positive", "adjective_comparative", "adjective_superlative", "adverb")
         for word in types:
-            print(word)
             self.data_insert("types", type=word)
 
 
@@ -103,5 +102,4 @@ class Database():
 
     def types_get(self):
         ret = self.data_select("types")
-        print(ret)
         return ret

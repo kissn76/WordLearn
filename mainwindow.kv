@@ -1,0 +1,24 @@
+<MainMenu>:
+    orientation: "horizontal"
+    height: 40
+    Button:
+        text: 'My first Item'
+        on_release: root.select('item1')
+    Button:
+        text: 'My second Item'
+        on_release: root.select('item2')
+    Button:
+        text: 'My third Item'
+        on_release: root.select('item3')
+
+<TypelistWindow>:
+    MainMenu:
+        size_hint_y: None
+    GridLayout:
+        id: item_list
+        cols: 2
+        Label:
+            text: "id"
+
+        Label:
+            text: "name"
