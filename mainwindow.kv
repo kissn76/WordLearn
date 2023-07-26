@@ -20,6 +20,9 @@
             text: "Types"
             TypelistWindow
         TabbedPanelItem:
+            text: "Languages"
+            LanguagelistWindow
+        TabbedPanelItem:
             text: 'tab2'
             BoxLayout:
                 Label:
@@ -27,12 +30,83 @@
                 Button:
                     text: 'Button that does nothing'
 
-<TypelistWindow>:
+<TypelistWindow, LanguagelistWindow>:
+    orientation: "vertical"
+    AnchorLayout:
+        height: 40
+        size_hint_y: None
+        anchor_x: "right"
+        anchor_y: "top"
+        padding: 6
+
+        Button:
+            text: "+"
+            size_hint_x: None
+            width: 40
+            on_release: root.add()
     GridLayout:
         id: item_list
-        cols: 2
-        Label:
+        cols: 3
+        Button:
             text: "id"
+            size_hint_y: None
+            height: 40
 
-        Label:
+        Button:
             text: "name"
+            size_hint_y: None
+            height: 40
+
+        Button:
+            text: "description"
+            size_hint_y: None
+            height: 40
+
+<TypeAddPopup>:
+    BoxLayout:
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "id"
+                size_hint_x: None
+
+            TextInput:
+                id: id_input
+                multiline: False
+
+            Label:
+                text: "Name"
+                size_hint_x: None
+
+            TextInput:
+                id: name_input
+                multiline: False
+
+            Label:
+                text: "Description"
+                size_hint_x: None
+
+            TextInput:
+                id: description_input
+                multiline: True
+
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: None
+                size_hint_y: None
+                Button:
+                    text: "Add"
+                    on_release: root.add()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
+                Button:
+                    text: "Cancel"
+                    on_release: root.dismiss()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
