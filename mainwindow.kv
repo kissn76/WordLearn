@@ -44,23 +44,27 @@
             size_hint_x: None
             width: 40
             on_release: root.add()
-    GridLayout:
-        id: item_list
-        cols: 3
-        Button:
-            text: "id"
-            size_hint_y: None
-            height: 40
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        BoxLayout:
+            id: item_list
+            orientation: "vertical"
+            ElemetntItem3
 
-        Button:
-            text: "name"
-            size_hint_y: None
-            height: 40
-
-        Button:
-            text: "description"
-            size_hint_y: None
-            height: 40
+<ElemetntItem3>:
+    orientation: "horizontal"
+    # size_hint_y: None
+    # height: 40
+    Label:
+        id: id
+        text: "id"
+    Label:
+        id: name
+        text: "name"
+    Label:
+        id: description
+        text: "description"
 
 <TypeAddPopup>:
     BoxLayout:
@@ -70,27 +74,21 @@
             Label:
                 text: "id"
                 size_hint_x: None
-
             TextInput:
                 id: id_input
                 multiline: False
-
             Label:
                 text: "Name"
                 size_hint_x: None
-
             TextInput:
                 id: name_input
                 multiline: False
-
             Label:
                 text: "Description"
                 size_hint_x: None
-
             TextInput:
                 id: description_input
                 multiline: True
-
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "bottom"

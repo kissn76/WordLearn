@@ -7,6 +7,10 @@ from kivy.clock import Clock
 import db_sqlite as db
 
 
+class ElemetntItem3(BoxLayout):
+    pass
+
+
 class TypelistWindow(BoxLayout):
     def __init__(self, **kwargs):
         super(TypelistWindow, self).__init__(**kwargs)
@@ -18,9 +22,11 @@ class TypelistWindow(BoxLayout):
         types = database.types_get()
 
         for type_t in types:
-            self.ids.item_list.add_widget(Button(text=str(type_t[0])))
-            self.ids.item_list.add_widget(Label(text=type_t[1]))
-            self.ids.item_list.add_widget(Label(text=type_t[2]))
+            elyt = ElemetntItem3()
+            elyt.ids.id.text = str(type_t[0])
+            elyt.ids.name.text = str(type_t[1])
+            elyt.ids.description.text = str(type_t[2])
+            self.ids.item_list.add_widget(elyt)
 
 
     def add(self):
@@ -51,9 +57,11 @@ class LanguagelistWindow(BoxLayout):
         types = database.languages_get()
 
         for type_t in types:
-            self.ids.item_list.add_widget(Label(text=str(type_t[0])))
-            self.ids.item_list.add_widget(Label(text=type_t[1]))
-            self.ids.item_list.add_widget(Label(text=type_t[2]))
+            elyt = ElemetntItem3()
+            elyt.ids.id.text = str(type_t[0])
+            elyt.ids.name.text = str(type_t[1])
+            elyt.ids.description.text = str(type_t[2])
+            self.ids.item_list.add_widget(elyt)
 
 
     def add(self):
