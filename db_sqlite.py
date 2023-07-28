@@ -1,5 +1,6 @@
 import sqlite3
 from sqlite3 import Error
+import os
 
 
 class Database():
@@ -18,6 +19,10 @@ class Database():
     def connection_close(self):
         self.conn.close()
         self.conn = None
+
+
+    def database_drop(self):
+        os.remove(self.sqlitePath)
 
 
     def create_table(self, create_table_sql:str):
@@ -39,51 +44,65 @@ class Database():
     def create_tables(self):
         sql_types = """
                         CREATE TABLE IF NOT EXISTS types (
-                        id TEXT PRIMARY KEY,
-                        name TEXT NOT NULL,
-                        description TEXT
-                    );
+                            id INTEGER,
+                            code TEXT UNIQUE NOT NULL,
+                            name TEXT NOT NULL,
+                            description TEXT,
+                            PRIMARY KEY(id),
+                            CHECK (code != ''),
+                            CHECK (name != '')
+                        );
                     """
         self.create_table(sql_types)
 
         types = {"vorb_1": ("Vorb 1st format", ""), "vorb_2": ("Vorb 2nd format", ""), "vorb_3": ("Vorb 3rd format", ""), "noun_singular": ("Noun singular", ""), "noun_plural": ("Noun plural", ""), "adjective_positive": ("Adjective positive", ""), "adjective_comparative": ("Adjective comparative", ""), "adjective_superlative": ("Adjective superlative", ""), "adverb": ("Adverb", "")}
-        for id, value in types.items():
-            self.data_insert("types", id=id, name=value[0], description=value[1])
+        for code, value in types.items():
+            self.data_insert("types", id=None, code=code, name=value[0], description=value[1])
 
         sql_words = """
                         CREATE TABLE IF NOT EXISTS words (
-                        id INTEGER PRIMARY KEY,
-                        word TEXT NOT NULL,
-                        type_id TEXT NOT NULL,
-                        connection_id INTEGER,
-                        FOREIGN KEY(type_id) REFERENCES types(id),
-                        FOREIGN KEY(connection_id) REFERENCES words(id)
-                    );
+                            id INTEGER,
+                            word TEXT NOT NULL,
+                            type_code TEXT NOT NULL,
+                            connection_id INTEGER,
+                            PRIMARY KEY(id),
+                            FOREIGN KEY(type_code) REFERENCES types(code),
+                            FOREIGN KEY(connection_id) REFERENCES words(id),
+                            CHECK (word != ''),
+                            CHECK (type_code != '')
+                        );
                     """
         self.create_table(sql_words)
 
         sql_languages = """
                         CREATE TABLE IF NOT EXISTS languages (
-                        code TEXT PRIMARY KEY,
-                        name TEXT NOT NULL,
-                        description TEXT
-                    );
+                            id INTEGER,
+                            code TEXT UNIQUE NOT NULL,
+                            name TEXT NOT NULL,
+                            description TEXT,
+                            PRIMARY KEY(id),
+                            CHECK (code != ''),
+                            CHECK (name != '')
+                        );
                     """
         self.create_table(sql_languages)
         languages = {"en_AU": ("English Australian", ""), "en_GB": ("English British", ""), "en_US": ("English American", ""), "hu_HU": ("Hungarian", "")}
         for code, value in languages.items():
-            self.data_insert("languages", code=code, name=value[0], description=value[1])
+            self.data_insert("languages", id=None, code=code, name=value[0], description=value[1])
 
         sql_pronunciations = """
                         CREATE TABLE IF NOT EXISTS pronunciations (
-                        id INTEGER PRIMARY KEY,
-                        word_id INTEGER NOT NULL,
-                        language_id TEXT NOT NULL,
-                        phonetic TEXT NOT NULL,
-                        voice TEXT,
-                        FOREIGN KEY(word_id) REFERENCES words(id),
-                        FOREIGN KEY(language_id) REFERENCES languages(code)
-                    );
+                            id INTEGER,
+                            word_id INTEGER NOT NULL,
+                            language_id TEXT NOT NULL,
+                            phonetic TEXT NOT NULL,
+                            voice TEXT,
+                            PRIMARY KEY(id),
+                            FOREIGN KEY(word_id) REFERENCES words(id),
+                            FOREIGN KEY(language_id) REFERENCES languages(code),
+                            CHECK (language_id != ''),
+                            CHECK (phonetic != '')
+                        );
                     """
         self.create_table(sql_pronunciations)
 
@@ -143,6 +162,10 @@ class Database():
     def types_get(self):
         ret = self.data_select("types")
         return ret
+
+
+    def type_add(self, code=None, name=None, description=None):
+        self.data_insert("types", code=code, name=name, description=description)
 
 
     def languages_get(self):

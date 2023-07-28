@@ -8,20 +8,37 @@
         anchor_y: "top"
         padding: 6
 
-        Button:
-            text: "..."
-            size_hint_x: None
-            width: 40
+        BoxLayout:
+            orientation: "horizontal"
+
+            Button:
+                text: "..."
+                size_hint_x: None
+                width: 40
+
+            Button:
+                text: "del"
+                size_hint_x: None
+                width: 40
+                on_release: root.database_del()
+
+            Button:
+                text: "add"
+                size_hint_x: None
+                width: 40
+                on_release: root.database_create()
 
     TabbedPanel:
         do_default_tab: False
 
         TabbedPanelItem:
             text: "Types"
-            TypelistWindow
+            TypelistWindow:
+                id: tp_tlw
         TabbedPanelItem:
             text: "Languages"
-            LanguagelistWindow
+            LanguagelistWindow:
+                id: tp_llw
         TabbedPanelItem:
             text: 'tab2'
             BoxLayout:
@@ -57,8 +74,8 @@
     # size_hint_y: None
     # height: 40
     Label:
-        id: id
-        text: "id"
+        id: code
+        text: "code"
     Label:
         id: name
         text: "name"
@@ -72,10 +89,10 @@
         GridLayout:
             cols: 2
             Label:
-                text: "id"
+                text: "Code"
                 size_hint_x: None
             TextInput:
-                id: id_input
+                id: code_input
                 multiline: False
             Label:
                 text: "Name"

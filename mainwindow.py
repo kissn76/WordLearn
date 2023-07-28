@@ -20,30 +20,37 @@ class TypelistWindow(BoxLayout):
     def on_start(self, *args):
         database = db.Database()
         types = database.types_get()
+        self.ids.item_list.clear_widgets()
 
-        for type_t in types:
-            elyt = ElemetntItem3()
-            elyt.ids.id.text = str(type_t[0])
-            elyt.ids.name.text = str(type_t[1])
-            elyt.ids.description.text = str(type_t[2])
-            self.ids.item_list.add_widget(elyt)
+        if bool(types):
+            for type_t in types:
+                elyt = ElemetntItem3()
+                elyt.ids.code.text = str(type_t[1])
+                elyt.ids.name.text = str(type_t[2])
+                elyt.ids.description.text = str(type_t[3])
+                self.ids.item_list.add_widget(elyt)
+        else:
+            Clock.schedule_once(self.on_start, 1)
 
 
     def add(self):
-        TypeAddPopup().open()
+        TypeAddPopup(self).open()
 
 
 class TypeAddPopup(Popup):
-    def __init__(self, **kwargs):
+    def __init__(self, master, **kwargs):
         super(TypeAddPopup, self).__init__(**kwargs)
         self.title = "Add new Type"
+        self.master = master
 
 
     def add(self):
-        id = self.ids.id_input.text
-        name = self.ids.name_input.text
-        description = self.ids.description_input.text
-        print("Add new Type", id, name, description)
+        code = self.ids.code_input.text.strip()
+        name = self.ids.name_input.text.strip()
+        description = self.ids.description_input.text.strip()
+        db.Database().type_add(code, name, description)
+        self.dismiss()
+        self.master.on_start()
 
 
 class LanguagelistWindow(BoxLayout):
@@ -55,13 +62,17 @@ class LanguagelistWindow(BoxLayout):
     def on_start(self, *args):
         database = db.Database()
         types = database.languages_get()
+        self.ids.item_list.clear_widgets()
 
-        for type_t in types:
-            elyt = ElemetntItem3()
-            elyt.ids.id.text = str(type_t[0])
-            elyt.ids.name.text = str(type_t[1])
-            elyt.ids.description.text = str(type_t[2])
-            self.ids.item_list.add_widget(elyt)
+        if bool(types):
+            for type_t in types:
+                elyt = ElemetntItem3()
+                elyt.ids.code.text = str(type_t[1])
+                elyt.ids.name.text = str(type_t[2])
+                elyt.ids.description.text = str(type_t[3])
+                self.ids.item_list.add_widget(elyt)
+        else:
+            Clock.schedule_once(self.on_start, 1)
 
 
     def add(self):
@@ -69,7 +80,16 @@ class LanguagelistWindow(BoxLayout):
 
 
 class MainPanel(BoxLayout):
-    pass
+    def database_del(self):
+        database = db.Database()
+        database.database_drop()
+        self.ids.tp_tlw.on_start()
+        self.ids.tp_llw.on_start()
+
+
+    def database_create(self):
+        database = db.Database()
+        database.create_tables()
 
 
 class MainWindow(App):
