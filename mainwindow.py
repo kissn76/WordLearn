@@ -29,8 +29,6 @@ class TypelistWindow(BoxLayout):
                 elyt.ids.name.text = str(type_t[2])
                 elyt.ids.description.text = str(type_t[3])
                 self.ids.item_list.add_widget(elyt)
-        else:
-            Clock.schedule_once(self.on_start, 1)
 
 
     def add(self):
@@ -71,8 +69,6 @@ class LanguagelistWindow(BoxLayout):
                 elyt.ids.name.text = str(type_t[2])
                 elyt.ids.description.text = str(type_t[3])
                 self.ids.item_list.add_widget(elyt)
-        else:
-            Clock.schedule_once(self.on_start, 1)
 
 
     def add(self):
@@ -90,6 +86,8 @@ class MainPanel(BoxLayout):
     def database_create(self):
         database = db.Database()
         database.create_tables()
+        self.ids.tp_tlw.on_start()
+        self.ids.tp_llw.on_start()
 
 
 class MainWindow(App):
