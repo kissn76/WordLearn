@@ -2,9 +2,35 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.pagelayout import PageLayout
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
 import db_sqlite as db
+
+
+class WordlistElement(BoxLayout):
+    pass
+
+
+class WordlistWindow(BoxLayout):
+    def __init__(self, **kwargs):
+        super(WordlistWindow, self).__init__(**kwargs)
+        Clock.schedule_once(self.on_start, 0)
+
+
+    def on_start(self, *args):
+        database = db.Database()
+        types = database.words_get()
+        self.ids.item_list.clear_widgets()
+
+        if bool(types):
+            for type_t in types:
+                elyt = WordlistElement()
+                elyt.ids.id.text = str(type_t[0])
+                elyt.ids.word.text = str(type_t[1])
+                elyt.ids.type_code.text = str(type_t[2])
+                elyt.ids.connection_id.text = str(type_t[3])
+                self.ids.item_list.add_widget(elyt)
 
 
 class ElemetntItem3(BoxLayout):
@@ -25,9 +51,9 @@ class TypelistWindow(BoxLayout):
         if bool(types):
             for type_t in types:
                 elyt = ElemetntItem3()
-                elyt.ids.code.text = str(type_t[1])
-                elyt.ids.name.text = str(type_t[2])
-                elyt.ids.description.text = str(type_t[3])
+                elyt.ids.code.text = str(type_t[0])
+                elyt.ids.name.text = str(type_t[1])
+                elyt.ids.description.text = str(type_t[2])
                 self.ids.item_list.add_widget(elyt)
 
 
@@ -65,9 +91,9 @@ class LanguagelistWindow(BoxLayout):
         if bool(types):
             for type_t in types:
                 elyt = ElemetntItem3()
-                elyt.ids.code.text = str(type_t[1])
-                elyt.ids.name.text = str(type_t[2])
-                elyt.ids.description.text = str(type_t[3])
+                elyt.ids.code.text = str(type_t[0])
+                elyt.ids.name.text = str(type_t[1])
+                elyt.ids.description.text = str(type_t[2])
                 self.ids.item_list.add_widget(elyt)
 
 
@@ -81,13 +107,14 @@ class MainPanel(BoxLayout):
         database.database_drop()
         self.ids.tp_tlw.on_start()
         self.ids.tp_llw.on_start()
+        self.ids.tp_wlw.on_start()
 
 
     def database_create(self):
         database = db.Database()
         database.create_tables()
         self.ids.tp_tlw.on_start()
-        self.ids.tp_llw.on_start()
+        self.ids.tp_wlw.on_start()
 
 
 class MainWindow(App):
