@@ -45,10 +45,11 @@ class Database():
     def create_tables(self):
         sql_types = """
                         CREATE TABLE IF NOT EXISTS types (
-                            code TEXT UNIQUE NOT NULL,
+                            code TEXT NOT NULL,
                             name TEXT NOT NULL,
                             description TEXT,
                             PRIMARY KEY(code),
+                            UNIQUE(code),
                             CHECK (code != ''),
                             CHECK (name != '')
                         );
@@ -64,7 +65,8 @@ class Database():
                             word TEXT NOT NULL,
                             type_code TEXT NOT NULL,
                             connection_id INTEGER,
-                            PRIMARY KEY(id),
+                            PRIMARY KEY(id AUTOINCREMENT),
+                            UNIQUE(word, type_code),
                             FOREIGN KEY(type_code) REFERENCES types(code),
                             FOREIGN KEY(connection_id) REFERENCES words(id),
                             CHECK (word != ''),
@@ -84,10 +86,11 @@ class Database():
 
         sql_languages = """
                         CREATE TABLE IF NOT EXISTS languages (
-                            code TEXT UNIQUE NOT NULL,
+                            code TEXT NOT NULL,
                             name TEXT NOT NULL,
                             description TEXT,
                             PRIMARY KEY(code),
+                            UNIQUE(code),
                             CHECK (code != ''),
                             CHECK (name != '')
                         );

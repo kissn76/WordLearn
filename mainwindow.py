@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -60,24 +61,28 @@ class WordChooser(BoxLayout):
         super(WordChooser, self).__init__(**kwargs)
 
         self.word = None
+        self.mainbutton_text = 'Select a word...'
+        self.none_text = '...'
 
         self.dropdown = DropDown()
-        self.mainbutton = Button(text ='Select a word...')
+
+        self.mainbutton = Button(text=self.mainbutton_text)
         self.add_widget(self.mainbutton)
         self.mainbutton.bind(on_release = self.dropdown.open)
 
-        self.dropdown.bind(on_select = lambda instance, x: setattr(self.mainbutton, 'text', x))
         self.dropdown.bind(on_select = self.callback)
 
         database = db.Database()
         words = database.words_get()
 
-        self.word_dict = {}
-
         if bool(words):
+            element = Button(size_hint_y=None)
+            element.text = self.none_text
+            element.bind(on_release=lambda element: self.dropdown.select(element.text))
+            self.dropdown.add_widget(element)
+
             for word_t in words:
                 w = f"{str(word_t[1])} ({str(word_t[2])})"
-                self.word_dict.update({w: str(word_t[0])})
                 element = Button(size_hint_y=None)
                 element.text = w
                 element.bind(on_release=lambda element: self.dropdown.select(element.text))
@@ -85,8 +90,36 @@ class WordChooser(BoxLayout):
 
 
     def callback(self, instance, x):
-        self.word = x
+        if x == self.none_text:
+            setattr(self.mainbutton, 'text', self.mainbutton_text)
+            self.word = None
+        else:
+            setattr(self.mainbutton, 'text', x)
+            self.word = x
         print(self.word)
+
+
+class PronunciationAddBoxRow(BoxLayout):
+    def __init__(self, **kwargs):
+        super(PronunciationAddBoxRow, self).__init__(**kwargs)
+        self.orientation = "horizontal"
+        self.add_widget(TextInput())
+        self.add_widget(TextInput())
+
+
+class PronunciationAddBox(BoxLayout):
+    def __init__(self, **kwargs):
+        super(PronunciationAddBox, self).__init__(**kwargs)
+        self.orientation = "vertical"
+        btn_add = Button(text="+", size_hint_x=None)
+        btn_add.bind(on_release=lambda element: self.new_row())
+        self.add_widget(btn_add)
+        self.add_widget(PronunciationAddBoxRow())
+
+
+    def new_row(self):
+        self.add_widget(PronunciationAddBoxRow())
+
 
 
 class TypeChooser(BoxLayout):
