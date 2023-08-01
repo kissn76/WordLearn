@@ -154,3 +154,44 @@
     Button:
         id: connection_id
         text: "connection_id"
+
+<WordAddPopup>:
+    BoxLayout:
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Word"
+                size_hint_x: None
+            TextInput:
+                id: word_input
+                multiline: False
+            Label:
+                text: "Word type"
+                size_hint_x: None
+            TypeChooser:
+                id: type_input
+            Label:
+                text: "Connection"
+                size_hint_x: None
+            WordChooser:
+                id: connection_input
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: None
+                size_hint_y: None
+                Button:
+                    text: "Add"
+                    on_release: root.add()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
+                Button:
+                    text: "Cancel"
+                    on_release: root.dismiss()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
