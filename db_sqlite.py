@@ -116,6 +116,22 @@ class Database():
                     """
         self.create_table(sql_pronunciations)
 
+        sql_media = """
+                        CREATE TABLE IF NOT EXISTS medias (
+                            id INTEGER,
+                            name TEXT NOT NULL,
+                            type TEXT NOT NULL,
+                            path TEXT NOT NULL,
+                            description TEXT,
+                            PRIMARY KEY(id AUTOINCREMENT),
+                            UNIQUE(name, type),
+                            CHECK (name != ''),
+                            CHECK (type != ''),
+                            CHECK (path != '')
+                        );
+                    """
+        self.create_table(sql_media)
+
 
     def data_insert(self, table:str, **values) -> int:
         columnNames = ', '.join(values.keys())
