@@ -1,0 +1,47 @@
+#:kivy 2.2.1
+
+<MainPanel>:
+    orientation: "vertical"
+
+    AnchorLayout:
+        height: 40
+        size_hint_y: None
+        anchor_x: "right"
+        anchor_y: "top"
+        padding: 6
+
+        BoxLayout:
+            orientation: "horizontal"
+
+            Button:
+                text: "..."
+                size_hint_x: None
+                width: 40
+
+            Button:
+                text: "del"
+                size_hint_x: None
+                width: 40
+                on_release: root.database_del()
+
+            Button:
+                text: "add"
+                size_hint_x: None
+                width: 40
+                on_release: root.database_create()
+
+    TabbedPanel:
+        do_default_tab: False
+
+        TabbedPanelItem:
+            text: "Types"
+            WordTypelistWindow:
+                id: tp_tlw
+        TabbedPanelItem:
+            text: "Languages"
+            LanguagelistWindow:
+                id: tp_llw
+        TabbedPanelItem:
+            text: "Words"
+            WordlistWindow:
+                id: tp_wlw

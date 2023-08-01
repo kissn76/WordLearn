@@ -1,0 +1,79 @@
+#:kivy 2.2.1
+
+<WordlistWindow>:
+    orientation: "vertical"
+    AnchorLayout:
+        height: 40
+        size_hint_y: None
+        anchor_x: "right"
+        anchor_y: "top"
+        padding: 6
+
+        Button:
+            text: "+"
+            size_hint_x: None
+            width: 40
+            on_release: root.add()
+    PageLayout:
+        id: item_list
+
+<WordlistElement>:
+    orientation: "vertical"
+    Button:
+        id: id
+        text: "id"
+    Button:
+        id: word
+        text: "word"
+    Button:
+        id: type_code
+        text: "type_code"
+    Button:
+        id: connection_id
+        text: "connection_id"
+
+<WordAddPopup>:
+    BoxLayout:
+        orientation: "vertical"
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Word"
+                size_hint_x: None
+            TextInput:
+                id: word_input
+                multiline: False
+            Label:
+                text: "Word type"
+                size_hint_x: None
+            WordTypeChooser:
+                id: type_input
+            Label:
+                text: "Connection"
+                size_hint_x: None
+            WordChooser:
+                id: connection_input
+            Label:
+                text: "Pronunciations"
+                size_hint_x: None
+            PronunciationAddBox:
+                id: pronunciation_input
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: None
+                size_hint_y: None
+                Button:
+                    text: "Add"
+                    on_release: root.add()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
+                Button:
+                    text: "Cancel"
+                    on_release: root.dismiss()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40

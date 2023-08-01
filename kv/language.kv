@@ -1,0 +1,37 @@
+#:kivy 2.2.1
+
+<LanguagelistWindow>:
+    orientation: "vertical"
+    AnchorLayout:
+        height: 40
+        size_hint_y: None
+        anchor_x: "right"
+        anchor_y: "top"
+        padding: 6
+
+        Button:
+            text: "+"
+            size_hint_x: None
+            width: 40
+            on_release: root.add()
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        BoxLayout:
+            id: item_list
+            orientation: "vertical"
+            LanguageElemetntItem
+
+<LanguageElemetntItem>:
+    orientation: "horizontal"
+    # size_hint_y: None
+    # height: 40
+    Label:
+        id: code
+        text: "code"
+    Label:
+        id: name
+        text: "name"
+    Label:
+        id: description
+        text: "description"

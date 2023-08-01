@@ -186,15 +186,6 @@ class Database():
         return ret
 
 
-    def types_get(self):
-        ret = self.data_select("types")
-        return ret
-
-
-    def type_add(self, code=None, name=None, description=None):
-        self.data_insert("types", code=code, name=name, description=description)
-
-
     def languages_get(self):
         ret = self.data_select("languages")
         return ret
