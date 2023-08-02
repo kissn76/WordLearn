@@ -43,5 +43,9 @@ class Media():
 
 
     def save(self):
+        # fájlnév beállítása, egyediség ellenőrzése
+        # kép átalakítása jpg képpé, maximális képméretre csökkentés, túl kicsi kép visszadobása
+        # hang
+        # videó
         database = db.Database()
         self.id = database.data_insert(self.__table_name, id=None, name=self.name, type=self.type, path=self.path, description=self.description)

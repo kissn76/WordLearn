@@ -75,7 +75,8 @@ class MediaFileChooser(BoxLayout):
 
     def callback(self, x):
         self.path = x
-        self.ids.mainbutton.text = self.path
+        if bool(self.path):
+            self.ids.mainbutton.text = self.path
 
 
 class MediaFileChooserPopup(Popup):
@@ -144,10 +145,12 @@ class MediaAddPopup(Popup):
 
     def add(self):
         name = self.ids.name_input.text.strip()
-        type = self.ids.type_input.type.strip()
-        path = self.ids.path_input.path.strip()
+        type = self.ids.type_input.type
+        path = self.ids.path_input.path
         description = self.ids.description_input.text.strip()
+
         print(name, type, path, description)
-        # media.Media(name=name, type=type, path=path, description=description).save()
-        self.dismiss()
-        self.master.on_start()
+        if len(name) > 0 and len(type) > 0 and len(path) > 0:
+            # media.Media(name=name, type=type, path=path, description=description).save()
+            self.dismiss()
+            self.master.on_start()
