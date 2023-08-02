@@ -62,7 +62,6 @@ class MediaTypeChooser(BoxLayout):
 
     def callback(self, instance, x):
         self.type = self.names[x]
-        print(self.type)
 
 
 class MediaFileChooser(BoxLayout):
@@ -71,15 +70,43 @@ class MediaFileChooser(BoxLayout):
 
         self.path = None
         self.popup = MediaFileChooserPopup()
+        self.popup.bind(on_dismiss=lambda element: self.callback(self.popup.source))
 
 
-    def callback(self, instance, x):
-        self.path = self.names[x]
-        print(self.path)
+    def callback(self, x):
+        self.path = x
+        self.ids.mainbutton.text = self.path
 
 
 class MediaFileChooserPopup(Popup):
-    pass
+    def __init__(self, **kwargs):
+        super(MediaFileChooserPopup, self).__init__(**kwargs)
+        self.source = None
+
+
+    def image_set(self):
+        source = None
+        try:
+            source = self.ids.filechooser.selection[0]
+        except:
+            pass
+
+        if bool(source):
+            self.ids.image.source = source
+
+
+    def add(self):
+        source = None
+        try:
+            source = self.ids.filechooser.selection[0]
+        except:
+            pass
+
+        if bool(source):
+            self.source = source
+
+        self.dismiss()
+
 
 
 class MediaElementItem(BoxLayout):
@@ -117,9 +144,10 @@ class MediaAddPopup(Popup):
 
     def add(self):
         name = self.ids.name_input.text.strip()
-        type = self.ids.type_input.text.strip()
-        path = self.ids.path_input.text.strip()
+        type = self.ids.type_input.type.strip()
+        path = self.ids.path_input.path.strip()
         description = self.ids.description_input.text.strip()
-        media.Media(name=name, type=type, path=path, description=description).save()
+        print(name, type, path, description)
+        # media.Media(name=name, type=type, path=path, description=description).save()
         self.dismiss()
         self.master.on_start()

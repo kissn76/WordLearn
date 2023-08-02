@@ -94,9 +94,12 @@
 
 <MediaFileChooserPopup>:
     BoxLayout:
-        FileChooserListView:
+        FileChooserIconView:
             id: filechooser
-            on_selection: print(self.path, self.selection)
+            on_selection: root.image_set()
+        Image:
+            id: image
+            source: None
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "bottom"
