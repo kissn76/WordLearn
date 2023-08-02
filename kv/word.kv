@@ -1,6 +1,6 @@
 #:kivy 2.2.1
 
-<WordlistWindow>:
+<WordList>:
     orientation: "vertical"
     AnchorLayout:
         height: 40
@@ -17,7 +17,7 @@
     PageLayout:
         id: item_list
 
-<WordlistElement>:
+<WordListElement>:
     orientation: "vertical"
     Button:
         id: id
@@ -56,8 +56,8 @@
             Label:
                 text: "Pronunciations"
                 size_hint_x: None
-            PronunciationAddBox:
-                id: pronunciation_input
+            PhoneticAddBox:
+                id: phonetic_input
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "bottom"

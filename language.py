@@ -1,38 +1,41 @@
-from kivy.lang import Builder
-from kivy.uix.button import Button
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.popup import Popup
-from kivy.uix.dropdown import DropDown
-from kivy.clock import Clock
 import db_sqlite as db
 
 
-Builder.load_file("kv/language.kv")
+def get_all() -> list:
+    database = db.Database()
+    data = database.data_select("languages")
+    objects = []
+    for t in data:
+        objects.append(Language(t[0], t[1], t[2]))
+
+    return objects
 
 
-class LanguageElemetntItem(BoxLayout):
-    pass
+class Language():
+    def __init__(self, code=None, name=None, description=None):
+        self.code = code
+        self.name = name
+        self.description = description
+
+        self.__table_name = "languages"
 
 
-class LanguagelistWindow(BoxLayout):
-    def __init__(self, **kwargs):
-        super(LanguagelistWindow, self).__init__(**kwargs)
-        Clock.schedule_once(self.on_start, 0)
+    def get_as_dict(self):
+        representation = {}
+        representation.update({"code": self.code})
+        representation.update({"name": self.name})
+        representation.update({"description": self.description})
+        return representation
 
 
-    def on_start(self, *args):
+    def load(self, code):
         database = db.Database()
-        types = database.languages_get()
-        self.ids.item_list.clear_widgets()
-
-        if bool(types):
-            for type_t in types:
-                elyt = LanguageElemetntItem()
-                elyt.ids.code.text = str(type_t[0])
-                elyt.ids.name.text = str(type_t[1])
-                elyt.ids.description.text = str(type_t[2])
-                self.ids.item_list.add_widget(elyt)
+        data = database.data_select(self.__table_name, whereClause=f"code={code}")
+        self.code = data[0]
+        self.name = data[1]
+        self.description = data[2]
 
 
-    def add(self):
-        print("Add new Language")
+    def save(self):
+        database = db.Database()
+        database.data_insert(self.__table_name, code=self.code, name=self.name, description=self.description)

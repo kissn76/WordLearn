@@ -1,14 +1,14 @@
 import db_sqlite as db
 
 
-def types_get():
+def get_all() -> list:
     database = db.Database()
     data = database.data_select("types")
-    types = {}
+    objects = []
     for t in data:
-        types.update({t[0]: WordType(t[0], t[1], t[2])})
+        objects.append(WordType(t[0], t[1], t[2]))
 
-    return types
+    return objects
 
 
 class WordType():
@@ -18,6 +18,14 @@ class WordType():
         self.description = description
 
         self.__table_name = "types"
+
+
+    def get_as_dict(self):
+        representation = {}
+        representation.update({"code": self.code})
+        representation.update({"name": self.name})
+        representation.update({"description": self.description})
+        return representation
 
 
     def load(self, code):

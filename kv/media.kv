@@ -1,6 +1,6 @@
 #:kivy 2.2.1
 
-<LanguageList>:
+<MediaList>:
     orientation: "vertical"
     AnchorLayout:
         height: 40
@@ -20,33 +20,30 @@
         BoxLayout:
             id: item_list
             orientation: "vertical"
-            LanguageElementItem
+            MediaElementItem
 
-<LanguageElementItem>:
+<MediaElementItem>:
     orientation: "horizontal"
     # size_hint_y: None
     # height: 40
     Label:
-        id: code
-        text: "code"
-    Label:
         id: name
         text: "name"
+    Label:
+        id: type
+        text: "type"
+    Label:
+        id: path
+        text: "path"
     Label:
         id: description
         text: "description"
 
-<LanguageAddPopup>:
+<MediaAddPopup>:
     BoxLayout:
         orientation: "vertical"
         GridLayout:
             cols: 2
-            Label:
-                text: "Code"
-                size_hint_x: None
-            TextInput:
-                id: code_input
-                multiline: False
             Label:
                 text: "Name"
                 size_hint_x: None
@@ -54,11 +51,52 @@
                 id: name_input
                 multiline: False
             Label:
+                text: "Type"
+                size_hint_x: None
+            MediaTypeChooser:
+                id: type_input
+            Label:
+                text: "Path"
+                size_hint_x: None
+            MediaFileChooser:
+                id: path_input
+            Label:
                 text: "Description"
                 size_hint_x: None
             TextInput:
                 id: description_input
                 multiline: True
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: None
+                size_hint_y: None
+                Button:
+                    text: "Add"
+                    on_release: root.add()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
+                Button:
+                    text: "Cancel"
+                    on_release: root.dismiss()
+                    size_hint_x: None
+                    size_hint_y: None
+                    height: 40
+
+<MediaFileChooser>:
+    Button:
+        id: mainbutton
+        text: 'Select media...'
+        on_release: root.popup.open()
+
+<MediaFileChooserPopup>:
+    BoxLayout:
+        FileChooserListView:
+            id: filechooser
+            on_selection: print(self.path, self.selection)
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "bottom"

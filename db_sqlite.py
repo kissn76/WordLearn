@@ -100,13 +100,12 @@ class Database():
         for code, value in languages.items():
             self.data_insert("languages", code=code, name=value[0], description=value[1])
 
-        sql_pronunciations = """
-                        CREATE TABLE IF NOT EXISTS pronunciations (
+        sql_phonetics = """
+                        CREATE TABLE IF NOT EXISTS phonetics (
                             id INTEGER,
                             word_id INTEGER NOT NULL,
                             language_code TEXT NOT NULL,
                             phonetic TEXT NOT NULL,
-                            voice TEXT,
                             PRIMARY KEY(id),
                             FOREIGN KEY(word_id) REFERENCES words(id),
                             FOREIGN KEY(language_code) REFERENCES languages(code),
@@ -114,9 +113,22 @@ class Database():
                             CHECK (phonetic != '')
                         );
                     """
-        self.create_table(sql_pronunciations)
+        self.create_table(sql_phonetics)
 
-        sql_media = """
+        sql_phonetics_voices = """
+                        CREATE TABLE IF NOT EXISTS phonetics_voices (
+                            id INTEGER,
+                            phonetic_id INTEGER NOT NULL,
+                            media_id INTEGER NOT NULL,
+                            description TEXT,
+                            PRIMARY KEY(id AUTOINCREMENT),
+                            FOREIGN KEY(phonetic_id) REFERENCES phonetics(id),
+                            FOREIGN KEY(media_id) REFERENCES medias(id)
+                        );
+                    """
+        self.create_table(sql_phonetics_voices)
+
+        sql_medias = """
                         CREATE TABLE IF NOT EXISTS medias (
                             id INTEGER,
                             name TEXT NOT NULL,
@@ -130,7 +142,7 @@ class Database():
                             CHECK (path != '')
                         );
                     """
-        self.create_table(sql_media)
+        self.create_table(sql_medias)
 
 
     def data_insert(self, table:str, **values) -> int:
@@ -160,7 +172,7 @@ class Database():
 
 
     def data_select(self, table:str, fields:tuple=("*",), whereClause:str=None) -> list:
-        ret = None
+        ret = []
 
         selectFields = ','.join(fields)
         sql = f"SELECT {selectFields} FROM {table}"
@@ -183,14 +195,4 @@ class Database():
         else:
             print("Error! Cannot create the database connection.")
 
-        return ret
-
-
-    def languages_get(self):
-        ret = self.data_select("languages")
-        return ret
-
-
-    def words_get(self):
-        ret = self.data_select("words")
         return ret

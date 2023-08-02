@@ -4,20 +4,20 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.clock import Clock
-import wordtype
+import language
 
 
-Builder.load_file("kv/wordtype.kv")
+Builder.load_file("kv/language.kv")
 
 
-class WordTypeChooser(BoxLayout):
+class LanguageChooser(BoxLayout):
     def __init__(self, **kwargs):
-        super(WordTypeChooser, self).__init__(**kwargs)
+        super(LanguageChooser, self).__init__(**kwargs)
 
-        self.type = None
+        self.language = None
 
         self.dropdown = DropDown()
-        self.mainbutton = Button(text ='Select type...')
+        self.mainbutton = Button(text ='Select language...')
         self.add_widget(self.mainbutton)
         self.mainbutton.bind(on_release = self.dropdown.open)
 
@@ -25,7 +25,7 @@ class WordTypeChooser(BoxLayout):
         self.dropdown.bind(on_select = self.callback)
 
         self.names = {}
-        for obj in wordtype.get_all():
+        for obj in language.get_all():
             self.names.update({obj.name: obj.code})
             element = Button(size_hint_y=None)
             element.text = obj.name
@@ -38,21 +38,21 @@ class WordTypeChooser(BoxLayout):
         print(self.type)
 
 
-class WordTypeElementItem(BoxLayout):
+class LanguageElementItem(BoxLayout):
     pass
 
 
-class WordTypeList(BoxLayout):
+class LanguageList(BoxLayout):
     def __init__(self, **kwargs):
-        super(WordTypeList, self).__init__(**kwargs)
+        super(LanguageList, self).__init__(**kwargs)
         Clock.schedule_once(self.on_start, 0)
 
 
     def on_start(self, *args):
         self.ids.item_list.clear_widgets()
 
-        for obj in wordtype.get_all():
-            elyt = WordTypeElementItem()
+        for obj in language.get_all():
+            elyt = LanguageElementItem()
             elyt.ids.code.text = obj.code
             elyt.ids.name.text = obj.name
             elyt.ids.description.text = obj.description
@@ -60,13 +60,13 @@ class WordTypeList(BoxLayout):
 
 
     def add(self):
-        WordTypeAddPopup(self).open()
+        LanguageAddPopup(self).open()
 
 
-class WordTypeAddPopup(Popup):
+class LanguageAddPopup(Popup):
     def __init__(self, master, **kwargs):
-        super(WordTypeAddPopup, self).__init__(**kwargs)
-        self.title = "Add new Type"
+        super(LanguageAddPopup, self).__init__(**kwargs)
+        self.title = "Add new Language"
         self.master = master
 
 
@@ -74,6 +74,6 @@ class WordTypeAddPopup(Popup):
         code = self.ids.code_input.text.strip()
         name = self.ids.name_input.text.strip()
         description = self.ids.description_input.text.strip()
-        wordtype.WordType(code=code, name=name, description=description).save()
+        language.Language(code=code, name=name, description=description).save()
         self.dismiss()
         self.master.on_start()
