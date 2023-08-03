@@ -22,7 +22,10 @@ class Database():
 
 
     def database_drop(self):
-        os.remove(self.sqlitePath)
+        try:
+            os.remove(self.sqlitePath)
+        except Exception as e:
+            print(e)
 
 
     def create_table(self, create_table_sql:str):

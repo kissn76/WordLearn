@@ -2,6 +2,7 @@ from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
+from kivy.uix.modalview import ModalView
 from kivy.uix.dropdown import DropDown
 from kivy.clock import Clock
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -43,7 +44,7 @@ class WordTypeElementItem(MDBoxLayout):
     pass
 
 
-class WordTypeList(MDBoxLayout):
+class WordTypeList(Popup):
     def __init__(self, **kwargs):
         super(WordTypeList, self).__init__(**kwargs)
         Clock.schedule_once(self.on_start, 0)

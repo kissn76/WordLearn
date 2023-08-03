@@ -16,21 +16,15 @@ class MainPanel(MDBoxLayout):
     def database_del(self):
         database = db.Database()
         database.database_drop()
-        self.ids.tp_tlw.on_start()
-        self.ids.tp_llw.on_start()
-        self.ids.tp_wlw.on_start()
-        self.ids.tp_mtlw.on_start()
-        self.ids.tp_mlw.on_start()
 
 
     def database_create(self):
         database = db.Database()
         database.create_tables()
-        self.ids.tp_tlw.on_start()
-        self.ids.tp_llw.on_start()
-        self.ids.tp_wlw.on_start()
-        self.ids.tp_mtlw.on_start()
-        self.ids.tp_mlw.on_start()
+
+
+    def open_wordtype_popup(self):
+        wordtype_ui.WordTypeList().open()
 
 
 class MainWindow(MDApp):

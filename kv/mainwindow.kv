@@ -21,20 +21,16 @@
             on_release: root.database_create()
 
     MDBoxLayout:
-        orientation: "horizontal"
+        orientation: "vertical"
+        adaptive_height: True
         padding: 6
         spacing: 6
 
-        MDFloatingActionButton:
-            icon: "menu"
+        MDRaisedButton:
+            text: "Word Types"
+            on_release: root.open_wordtype_popup()
 
-        MDFloatingActionButton:
-            icon: "database-off"
-            on_release: root.database_del()
-
-        MDFloatingActionButton:
-            icon: "database"
-            on_release: root.database_create()
+    Widget
 
     # MDTabs:
     #     id: tabs

@@ -1,20 +1,26 @@
 #:kivy 2.2.1
 
 <WordTypeList>:
-    orientation: "vertical"
-    adaptive_size: True
+    MDBoxLayout:
+        orientation: "vertical"
 
-    MDFloatingActionButton:
-        icon: "plus"
-        on_release: root.add()
+        MDFloatingActionButton:
+            icon: "plus"
+            on_release: root.add()
 
-    ScrollView:
-        do_scroll_x: False
-        do_scroll_y: True
-        MDBoxLayout:
-            id: item_list
-            orientation: "vertical"
-            WordTypeElementItem
+        MDScrollView:
+            MDBoxLayout:
+                id: item_list
+                orientation: "vertical"
+                adaptive_height: True
+                WordTypeElementItem
+
+        MDRaisedButton:
+            text: "Close"
+            adaptive_height: True
+            on_release: root.dismiss()
+
+        Widget
 
 <WordTypeElementItem>:
     orientation: "horizontal"
