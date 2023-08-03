@@ -30,13 +30,20 @@ class Word():
         return representation
 
 
-    def load(self, id):
+    def load(self):
         database = db.Database()
-        data = database.data_select(self.__table_name, whereClause=f"id={id}")
-        self.id = data[0]
-        self.word = data[1]
-        self.wordtype = data[2]
-        self.connection_id = data[3]
+        data = None
+
+        if bool(self.id):
+            data = database.data_select(self.__table_name, whereClause=f"id={self.id}")
+        elif bool(self.word) and bool(self.wordtype):
+            data = database.data_select(self.__table_name, whereClause=f"word={self.word} AND wordtype={self.wordtype}")
+
+        if bool(data):
+            self.id = data[0]
+            self.word = data[1]
+            self.wordtype = data[2]
+            self.connection_id = data[3]
 
 
     def save(self):

@@ -3,53 +3,58 @@
 <MainPanel>:
     orientation: "vertical"
 
-    AnchorLayout:
-        height: 40
-        size_hint_y: None
-        anchor_x: "right"
-        anchor_y: "top"
+    MDBoxLayout:
+        orientation: "horizontal"
+        adaptive_height: True
         padding: 6
+        spacing: 6
 
-        BoxLayout:
-            orientation: "horizontal"
+        MDFloatingActionButton:
+            icon: "menu"
 
-            Button:
-                text: "..."
-                size_hint_x: None
-                width: 40
+        MDFloatingActionButton:
+            icon: "database-off"
+            on_release: root.database_del()
 
-            Button:
-                text: "del"
-                size_hint_x: None
-                width: 40
-                on_release: root.database_del()
+        MDFloatingActionButton:
+            icon: "database"
+            on_release: root.database_create()
 
-            Button:
-                text: "add"
-                size_hint_x: None
-                width: 40
-                on_release: root.database_create()
+    MDBoxLayout:
+        orientation: "horizontal"
+        padding: 6
+        spacing: 6
 
-    TabbedPanel:
-        do_default_tab: False
+        MDFloatingActionButton:
+            icon: "menu"
 
-        TabbedPanelItem:
-            text: "Word types"
-            WordTypeList:
-                id: tp_tlw
-        TabbedPanelItem:
-            text: "Languages"
-            LanguageList:
-                id: tp_llw
-        TabbedPanelItem:
-            text: "Media types"
-            MediaTypeList:
-                id: tp_mtlw
-        TabbedPanelItem:
-            text: "Media"
-            MediaList:
-                id: tp_mlw
-        TabbedPanelItem:
-            text: "Words"
-            WordList:
-                id: tp_wlw
+        MDFloatingActionButton:
+            icon: "database-off"
+            on_release: root.database_del()
+
+        MDFloatingActionButton:
+            icon: "database"
+            on_release: root.database_create()
+
+    # MDTabs:
+    #     id: tabs
+    #     MainTab:
+    #         title: "Word types"
+    #         WordTypeList:
+    #             id: tp_tlw
+    #     MainTab:
+    #         title: "Languages"
+    #         LanguageList:
+    #             id: tp_llw
+    #     MainTab:
+    #         title: "Media types"
+    #         MediaTypeList:
+    #             id: tp_mtlw
+    #     MainTab:
+    #         title: "Media"
+    #         MediaList:
+    #             id: tp_mlw
+    #     MainTab:
+    #         title: "Words"
+    #         WordList:
+    #             id: tp_wlw

@@ -12,10 +12,10 @@ def get_all() -> list:
 
 
 class Media():
-    def __init__(self, id=None, name=None, type=None, path=None, description=None):
+    def __init__(self, id=None, name=None, mediatype=None, path=None, description=None):
         self.id = id
         self.name = name
-        self.type = type
+        self.mediatype = mediatype
         self.path = path
         self.description = description
 
@@ -26,20 +26,29 @@ class Media():
         representation = {}
         representation.update({"id": self.id})
         representation.update({"name": self.name})
-        representation.update({"type": self.type})
+        representation.update({"mediatype": self.mediatype})
         representation.update({"path": self.path})
         representation.update({"description": self.description})
         return representation
 
 
-    def load(self, id):
+    def load(self):
         database = db.Database()
-        data = database.data_select(self.__table_name, whereClause=f"id={id}")
-        self.id = data[0]
-        self.name = data[1]
-        self.type = data[2]
-        self.path = data[3]
-        self.description = data[4]
+        data = None
+
+        if bool(self.id):
+            data = database.data_select(self.__table_name, whereClause=f"id={self.id}")
+        if bool(self.path):
+            data = database.data_select(self.__table_name, whereClause=f"path={self.path}")
+        elif bool(self.name) and bool(self.mediatype):
+            data = database.data_select(self.__table_name, whereClause=f"name={self.name} AND mediatype={self.mediatype}")
+
+        if bool(data):
+            self.id = data[0]
+            self.name = data[1]
+            self.mediatype = data[2]
+            self.path = data[3]
+            self.description = data[4]
 
 
     def save(self):
@@ -48,4 +57,4 @@ class Media():
         # hang
         # videó
         database = db.Database()
-        self.id = database.data_insert(self.__table_name, id=None, name=self.name, type=self.type, path=self.path, description=self.description)
+        self.id = database.data_insert(self.__table_name, id=None, name=self.name, mediatype=self.mediatype, path=self.path, description=self.description)

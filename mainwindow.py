@@ -1,6 +1,6 @@
-from kivy.app import App
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.lang import Builder
-from kivy.uix.boxlayout import BoxLayout
 import db_sqlite as db
 import word_ui
 import wordtype_ui
@@ -12,7 +12,7 @@ import media_ui
 Builder.load_file("kv/mainwindow.kv")
 
 
-class MainPanel(BoxLayout):
+class MainPanel(MDBoxLayout):
     def database_del(self):
         database = db.Database()
         database.database_drop()
@@ -33,7 +33,7 @@ class MainPanel(BoxLayout):
         self.ids.tp_mlw.on_start()
 
 
-class MainWindow(App):
+class MainWindow(MDApp):
     def build(self):
         return MainPanel()
 

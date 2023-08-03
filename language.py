@@ -28,12 +28,17 @@ class Language():
         return representation
 
 
-    def load(self, code):
+    def load(self):
         database = db.Database()
-        data = database.data_select(self.__table_name, whereClause=f"code={code}")
-        self.code = data[0]
-        self.name = data[1]
-        self.description = data[2]
+        data = None
+
+        if bool(self.code):
+            data = database.data_select(self.__table_name, whereClause=f"code={self.code}")
+
+        if bool(data):
+            self.code = data[0]
+            self.name = data[1]
+            self.description = data[2]
 
 
     def save(self):

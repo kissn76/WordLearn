@@ -9,19 +9,14 @@
         anchor_y: "top"
         padding: 6
 
-        Button:
-            text: "+"
-            size_hint_x: None
-            width: 40
+        MDFloatingActionButton:
+            icon: "plus"
             on_release: root.add()
     PageLayout:
         id: item_list
 
 <WordListElement>:
     orientation: "vertical"
-    Button:
-        id: id
-        text: "id"
     Button:
         id: word
         text: "word"

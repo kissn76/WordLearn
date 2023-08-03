@@ -30,13 +30,20 @@ class Phonetic():
         return representation
 
 
-    def load(self, id):
+    def load(self):
         database = db.Database()
-        data = database.data_select(self.__table_name, whereClause=f"id={id}")
-        self.id = data[0]
-        self.word_id = data[1]
-        self.language_code = data[2]
-        self.phonetic = data[3]
+        data = None
+
+        if bool(self.id):
+            data = database.data_select(self.__table_name, whereClause=f"id={self.id}")
+        elif bool(self.word_id) and bool(self.language_code):
+            data = database.data_select(self.__table_name, whereClause=f"word_id={self.word_id} AND language_code={self.language_code}")
+
+        if bool(data):
+            self.id = data[0]
+            self.word_id = data[1]
+            self.language_code = data[2]
+            self.phonetic = data[3]
 
 
     def save(self):

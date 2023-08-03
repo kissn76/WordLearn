@@ -74,6 +74,17 @@ class MediaTypeAddPopup(Popup):
         code = self.ids.code_input.text.strip()
         name = self.ids.name_input.text.strip()
         description = self.ids.description_input.text.strip()
-        mediatype.MediaType(code=code, name=name, description=description).save()
-        self.dismiss()
-        self.master.on_start()
+
+        ok = True
+        if not bool(code):
+            ok = False
+            print("ERROR - entering the code is mandatory")
+
+        if not bool(name):
+            ok = False
+            print("ERROR - entering the name is mandatory")
+
+        if  bool(ok):
+            mediatype.MediaType(code=code, name=name, description=description).save()
+            self.dismiss()
+            self.master.on_start()

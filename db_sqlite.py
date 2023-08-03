@@ -74,15 +74,15 @@ class Database():
                         );
                     """
         self.create_table(sql_words)
-        words = [
-                ["read", "vorb_1", None],
-                ["read", "vorb_2", None],
-                ["read", "vorb_3", None],
-                ["book", "noun_singular", None],
-                ["books", "noun_plural", None]
-            ]
-        for word, wordtype, connection_id in words:
-            self.data_insert("words", id=None, word=word, wordtype=wordtype, connection_id=connection_id)
+        # words = [
+        #         ["read", "vorb_1", None],
+        #         ["read", "vorb_2", None],
+        #         ["read", "vorb_3", None],
+        #         ["book", "noun_singular", None],
+        #         ["books", "noun_plural", None]
+        #     ]
+        # for word, wordtype, connection_id in words:
+        #     self.data_insert("words", id=None, word=word, wordtype=wordtype, connection_id=connection_id)
 
         sql_languages = """
                         CREATE TABLE IF NOT EXISTS languages (
@@ -148,14 +148,15 @@ class Database():
                         CREATE TABLE IF NOT EXISTS medias (
                             id INTEGER,
                             name TEXT NOT NULL,
-                            type TEXT NOT NULL,
+                            mediatype TEXT NOT NULL,
                             path TEXT NOT NULL,
                             description TEXT,
                             PRIMARY KEY(id AUTOINCREMENT),
-                            FOREIGN KEY(type) REFERENCES mediatypes(code),
-                            UNIQUE(name, type),
+                            FOREIGN KEY(mediatype) REFERENCES mediatypes(code),
+                            UNIQUE(name, mediatype),
+                            UNIQUE(path),
                             CHECK (name != ''),
-                            CHECK (type != ''),
+                            CHECK (mediatype != ''),
                             CHECK (path != '')
                         );
                     """

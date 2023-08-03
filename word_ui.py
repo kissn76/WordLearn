@@ -36,22 +36,6 @@ class WordList(BoxLayout):
         WordAddPopup(self).open()
 
 
-class WordAddPopup(Popup):
-    def __init__(self, master, **kwargs):
-        super(WordAddPopup, self).__init__(**kwargs)
-        self.title = "Add new Word"
-        self.master = master
-
-
-    def add(self):
-        word = self.ids.word_input.text.strip()
-        wordtype = self.ids.wordtype_input.text.strip()
-        connection_id = self.ids.connection_id_input.text.strip()
-        # db.Database().type_add(code, name, description)
-        self.dismiss()
-        self.master.on_start()
-
-
 class WordChooser(BoxLayout):
     def __init__(self, **kwargs):
         super(WordChooser, self).__init__(**kwargs)
@@ -77,7 +61,7 @@ class WordChooser(BoxLayout):
 
             for obj in words:
                 element = Button(size_hint_y=None)
-                element.text = f"{obj.word} ({obj.type_code})"
+                element.text = f"{obj.word} ({obj.wordtype})"
                 element.bind(on_release=lambda element: self.dropdown.select(element.text))
                 self.dropdown.add_widget(element)
 
@@ -90,3 +74,30 @@ class WordChooser(BoxLayout):
             setattr(self.mainbutton, 'text', x)
             self.word = x
         print(self.word)
+
+
+class WordAddPopup(Popup):
+    def __init__(self, master, **kwargs):
+        super(WordAddPopup, self).__init__(**kwargs)
+        self.title = "Add new Word"
+        self.master = master
+
+
+    def add(self):
+        word_s = self.ids.word_input.text.strip()
+        wordtype = self.ids.wordtype_input.type
+        connection_id = self.ids.connection_input.word
+
+        ok = True
+        if not bool(word_s):
+            ok = False
+            print("ERROR - entering the word is mandatory")
+
+        if not bool(wordtype):
+            ok = False
+            print("ERROR - type selection is mandatory")
+
+        if  bool(ok):
+            word.Word(word=word_s, wordtype=wordtype, connection_id=connection_id).save()
+            self.dismiss()
+            self.master.on_start()

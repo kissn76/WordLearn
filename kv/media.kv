@@ -9,10 +9,8 @@
         anchor_y: "top"
         padding: 6
 
-        Button:
-            text: "+"
-            size_hint_x: None
-            width: 40
+        MDFloatingActionButton:
+            icon: "plus"
             on_release: root.add()
     ScrollView:
         do_scroll_x: False
@@ -26,16 +24,16 @@
     orientation: "horizontal"
     # size_hint_y: None
     # height: 40
-    Label:
+    MDLabel:
         id: name
         text: "name"
-    Label:
+    MDLabel:
         id: type
         text: "type"
-    Label:
+    MDLabel:
         id: path
         text: "path"
-    Label:
+    MDLabel:
         id: description
         text: "description"
 

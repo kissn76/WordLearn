@@ -28,14 +28,32 @@ class WordType():
         return representation
 
 
-    def load(self, code):
+    def load(self):
         database = db.Database()
-        data = database.data_select(self.__table_name, whereClause=f"code={code}")
-        self.code = data[0]
-        self.name = data[1]
-        self.description = data[2]
+        data = None
+
+        if bool(self.code):
+            data = database.data_select(self.__table_name, whereClause=f"code={self.code}")
+
+        if bool(data):
+            self.code = data[0]
+            self.name = data[1]
+            self.description = data[2]
 
 
     def save(self):
-        database = db.Database()
-        database.data_insert(self.__table_name, code=self.code, name=self.name, description=self.description)
+        ok = True
+        message = []
+        if not bool(self.code):
+            ok = False
+            message.append("ERROR - entering the code is mandatory")
+
+        if not bool(self.name):
+            ok = False
+            message.append("ERROR - entering the name is mandatory")
+
+        if  bool(ok):
+            database = db.Database()
+            database.data_insert(self.__table_name, code=self.code, name=self.name, description=self.description)
+
+        return ok, message

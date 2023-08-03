@@ -4,6 +4,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.dropdown import DropDown
 from kivy.clock import Clock
+from kivymd.uix.boxlayout import MDBoxLayout
 import wordtype
 
 
@@ -38,11 +39,11 @@ class WordTypeChooser(BoxLayout):
         print(self.type)
 
 
-class WordTypeElementItem(BoxLayout):
+class WordTypeElementItem(MDBoxLayout):
     pass
 
 
-class WordTypeList(BoxLayout):
+class WordTypeList(MDBoxLayout):
     def __init__(self, **kwargs):
         super(WordTypeList, self).__init__(**kwargs)
         Clock.schedule_once(self.on_start, 0)
@@ -74,6 +75,10 @@ class WordTypeAddPopup(Popup):
         code = self.ids.code_input.text.strip()
         name = self.ids.name_input.text.strip()
         description = self.ids.description_input.text.strip()
-        wordtype.WordType(code=code, name=name, description=description).save()
-        self.dismiss()
-        self.master.on_start()
+
+        ok, message = wordtype.WordType(code=code, name=name, description=description).save()
+        if bool(ok):
+            self.dismiss()
+            self.master.on_start()
+        else:
+            print(message)
