@@ -3,21 +3,21 @@ import db_sqlite as db
 
 def get_all() -> list:
     database = db.Database()
-    data = database.data_select("wordtypes")
+    data = database.data_select("mediatypes")
     objects = []
     for t in data:
-        objects.append(WordType(t[0], t[1], t[2]))
+        objects.append(MediaType(t[0], t[1], t[2]))
 
     return objects
 
 
-class WordType():
+class MediaType():
     def __init__(self, code=None, name=None, description=None):
         self.code = code
         self.name = name
         self.description = description
 
-        self.__table_name = "wordtypes"
+        self.__table_name = "mediatypes"
 
 
     def get_as_dict(self):

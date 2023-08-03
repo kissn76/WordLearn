@@ -5,6 +5,7 @@ import db_sqlite as db
 import word_ui
 import wordtype_ui
 import language_ui
+import mediatype_ui
 import media_ui
 
 
@@ -18,6 +19,7 @@ class MainPanel(BoxLayout):
         self.ids.tp_tlw.on_start()
         self.ids.tp_llw.on_start()
         self.ids.tp_wlw.on_start()
+        self.ids.tp_mtlw.on_start()
         self.ids.tp_mlw.on_start()
 
 
@@ -27,6 +29,7 @@ class MainPanel(BoxLayout):
         self.ids.tp_tlw.on_start()
         self.ids.tp_llw.on_start()
         self.ids.tp_wlw.on_start()
+        self.ids.tp_mtlw.on_start()
         self.ids.tp_mlw.on_start()
 
 

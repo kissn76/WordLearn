@@ -149,8 +149,21 @@ class MediaAddPopup(Popup):
         path = self.ids.path_input.path
         description = self.ids.description_input.text.strip()
 
-        print(name, type, path, description)
-        if len(name) > 0 and len(type) > 0 and len(path) > 0:
+        ok = True
+        if not bool(name):
+            ok = False
+            print("ERROR - entering the name is mandatory")
+
+        if not bool(type):
+            ok = False
+            print("ERROR - type selection is mandatory")
+
+        if not bool(path):
+            ok = False
+            print("ERROR - file selection is mandatory")
+
+        if  bool(ok):
+            print(name, type, path, description)
             # media.Media(name=name, type=type, path=path, description=description).save()
             self.dismiss()
             self.master.on_start()

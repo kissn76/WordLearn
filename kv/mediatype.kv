@@ -1,6 +1,6 @@
 #:kivy 2.2.1
 
-<WordList>:
+<MediaTypeList>:
     orientation: "vertical"
     AnchorLayout:
         height: 40
@@ -14,50 +14,51 @@
             size_hint_x: None
             width: 40
             on_release: root.add()
-    PageLayout:
-        id: item_list
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        BoxLayout:
+            id: item_list
+            orientation: "vertical"
+            WordTypeElementItem
 
-<WordListElement>:
-    orientation: "vertical"
-    Button:
-        id: id
-        text: "id"
-    Button:
-        id: word
-        text: "word"
-    Button:
-        id: wordtype
-        text: "wordtype"
-    Button:
-        id: connection_id
-        text: "connection_id"
+<MediaTypeElementItem>:
+    orientation: "horizontal"
+    # size_hint_y: None
+    # height: 40
+    Label:
+        id: code
+        text: "code"
+    Label:
+        id: name
+        text: "name"
+    Label:
+        id: description
+        text: "description"
 
-<WordAddPopup>:
+<MediaTypeAddPopup>:
     BoxLayout:
         orientation: "vertical"
         GridLayout:
             cols: 2
             Label:
-                text: "Word"
+                text: "Code"
                 size_hint_x: None
             TextInput:
-                id: word_input
+                id: code_input
                 multiline: False
             Label:
-                text: "Word type"
+                text: "Name"
                 size_hint_x: None
-            WordTypeChooser:
-                id: wordtype_input
+            TextInput:
+                id: name_input
+                multiline: False
             Label:
-                text: "Connection"
+                text: "Description"
                 size_hint_x: None
-            WordChooser:
-                id: connection_input
-            Label:
-                text: "Pronunciations"
-                size_hint_x: None
-            PhoneticAddBox:
-                id: phonetic_input
+            TextInput:
+                id: description_input
+                multiline: True
         AnchorLayout:
             anchor_x: "center"
             anchor_y: "bottom"

@@ -43,8 +43,8 @@ class Database():
 
 
     def create_tables(self):
-        sql_types = """
-                        CREATE TABLE IF NOT EXISTS types (
+        sql_wordtypes = """
+                        CREATE TABLE IF NOT EXISTS wordtypes (
                             code TEXT NOT NULL,
                             name TEXT NOT NULL,
                             description TEXT,
@@ -54,23 +54,23 @@ class Database():
                             CHECK (name != '')
                         );
                     """
-        self.create_table(sql_types)
-        types = {"vorb_1": ("Vorb 1st format", ""), "vorb_2": ("Vorb 2nd format", ""), "vorb_3": ("Vorb 3rd format", ""), "noun_singular": ("Noun singular", ""), "noun_plural": ("Noun plural", ""), "adjective_positive": ("Adjective positive", ""), "adjective_comparative": ("Adjective comparative", ""), "adjective_superlative": ("Adjective superlative", ""), "adverb": ("Adverb", "")}
-        for code, value in types.items():
-            self.data_insert("types", code=code, name=value[0], description=value[1])
+        self.create_table(sql_wordtypes)
+        wordtypes = {"vorb_1": ("Vorb 1st format", ""), "vorb_2": ("Vorb 2nd format", ""), "vorb_3": ("Vorb 3rd format", ""), "noun_singular": ("Noun singular", ""), "noun_plural": ("Noun plural", ""), "adjective_positive": ("Adjective positive", ""), "adjective_comparative": ("Adjective comparative", ""), "adjective_superlative": ("Adjective superlative", ""), "adverb": ("Adverb", "")}
+        for code, value in wordtypes.items():
+            self.data_insert("wordtypes", code=code, name=value[0], description=value[1])
 
         sql_words = """
                         CREATE TABLE IF NOT EXISTS words (
                             id INTEGER,
                             word TEXT NOT NULL,
-                            type_code TEXT NOT NULL,
+                            wordtype TEXT NOT NULL,
                             connection_id INTEGER,
                             PRIMARY KEY(id AUTOINCREMENT),
-                            UNIQUE(word, type_code),
-                            FOREIGN KEY(type_code) REFERENCES types(code),
+                            UNIQUE(word, wordtype),
+                            FOREIGN KEY(wordtype) REFERENCES wordtypes(code),
                             FOREIGN KEY(connection_id) REFERENCES words(id),
                             CHECK (word != ''),
-                            CHECK (type_code != '')
+                            CHECK (wordtype != '')
                         );
                     """
         self.create_table(sql_words)
@@ -81,8 +81,8 @@ class Database():
                 ["book", "noun_singular", None],
                 ["books", "noun_plural", None]
             ]
-        for word, type_code, connection_id in words:
-            self.data_insert("words", id=None, word=word, type_code=type_code, connection_id=connection_id)
+        for word, wordtype, connection_id in words:
+            self.data_insert("words", id=None, word=word, wordtype=wordtype, connection_id=connection_id)
 
         sql_languages = """
                         CREATE TABLE IF NOT EXISTS languages (
@@ -128,6 +128,22 @@ class Database():
                     """
         self.create_table(sql_phonetics_voices)
 
+        sql_mediatypes = """
+                        CREATE TABLE IF NOT EXISTS mediatypes (
+                            code TEXT NOT NULL,
+                            name TEXT NOT NULL,
+                            description TEXT,
+                            PRIMARY KEY(code),
+                            UNIQUE(code),
+                            CHECK (code != ''),
+                            CHECK (name != '')
+                        );
+                    """
+        self.create_table(sql_mediatypes)
+        mediatypes = {"audio": ("Audio", ""), "video": ("Video", ""), "picture": ("Picture", "")}
+        for code, value in mediatypes.items():
+            self.data_insert("mediatypes", code=code, name=value[0], description=value[1])
+
         sql_medias = """
                         CREATE TABLE IF NOT EXISTS medias (
                             id INTEGER,
@@ -136,6 +152,7 @@ class Database():
                             path TEXT NOT NULL,
                             description TEXT,
                             PRIMARY KEY(id AUTOINCREMENT),
+                            FOREIGN KEY(type) REFERENCES mediatypes(code),
                             UNIQUE(name, type),
                             CHECK (name != ''),
                             CHECK (type != ''),

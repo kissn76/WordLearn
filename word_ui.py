@@ -27,7 +27,7 @@ class WordList(BoxLayout):
         for obj in word.get_all():
             elyt = WordListElement()
             elyt.ids.word.text = obj.word
-            elyt.ids.type_code.text = obj.type_code
+            elyt.ids.wordtype.text = obj.wordtype
             elyt.ids.connection_id.text = str(obj.connection_id)
             self.ids.item_list.add_widget(elyt)
 
@@ -45,7 +45,7 @@ class WordAddPopup(Popup):
 
     def add(self):
         word = self.ids.word_input.text.strip()
-        type_code = self.ids.type_code_input.text.strip()
+        wordtype = self.ids.wordtype_input.text.strip()
         connection_id = self.ids.connection_id_input.text.strip()
         # db.Database().type_add(code, name, description)
         self.dismiss()
