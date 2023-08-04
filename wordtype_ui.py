@@ -1,60 +1,39 @@
 from kivy.lang import Builder
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.popup import Popup
-from kivy.uix.modalview import ModalView
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.dropdown import DropDown
+from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.scrollview import MDScrollView
+from kivymd.uix.list import MDList, TwoLineListItem
 import wordtype
+import tools
 
 
 Builder.load_file("kv/wordtype.kv")
 
 
-class WordTypeChooser(BoxLayout):
+class WordTypeChooser(tools.Chooser):
     def __init__(self, **kwargs):
-        super(WordTypeChooser, self).__init__(**kwargs)
-
-        self.type = None
-
-        self.dropdown = DropDown()
-        self.mainbutton = Button(text ='Select type...')
-        self.add_widget(self.mainbutton)
-        self.mainbutton.bind(on_release = self.dropdown.open)
-
-        self.dropdown.bind(on_select = lambda instance, x: setattr(self.mainbutton, 'text', x))
-        self.dropdown.bind(on_select = self.callback)
-
-        self.names = {}
+        elements = {}
         for obj in wordtype.get_all():
-            self.names.update({obj.name: obj.code})
-            element = Button(size_hint_y=None)
-            element.text = obj.name
-            element.bind(on_release=lambda element: self.dropdown.select(element.text))
-            self.dropdown.add_widget(element)
+            elements.update({obj.code: obj.name})
+        super(WordTypeChooser, self).__init__(elements, button_text="Select a Word Type...", popup_title="Word Type chooser", **kwargs)
 
 
-    def callback(self, instance, x):
-        self.type = self.names[x]
-        print(self.type)
-
-
-class WordTypeElementItem(MDBoxLayout):
-    pass
-
-
-class WordTypeList(Popup):
+class WordTypeList(tools.AssetList):
     def __init__(self, **kwargs):
+        self.title = "Word Types"
         super(WordTypeList, self).__init__(**kwargs)
-        Clock.schedule_once(self.on_start, 0)
 
 
     def on_start(self, *args):
         self.ids.item_list.clear_widgets()
 
         for obj in wordtype.get_all():
-            elyt = WordTypeElementItem()
+            elyt = WordTypeListElement()
             elyt.ids.code.text = obj.code
             elyt.ids.name.text = obj.name
             elyt.ids.description.text = obj.description
@@ -63,6 +42,11 @@ class WordTypeList(Popup):
 
     def add(self):
         WordTypeAddPopup(self).open()
+
+
+class WordTypeListElement(MDBoxLayout):
+    def edit(self, x):
+        print("Edit:", x)
 
 
 class WordTypeAddPopup(Popup):
